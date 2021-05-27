@@ -88,6 +88,7 @@ export class SMARTHandler implements Authorization {
             this.config.expectedAudValue,
             this.config.expectedIssValue,
             this.jwksClient,
+            request.tenantId ? request.tenantId : '',
         );
 
         const fhirUserClaim = decodedToken[this.config.fhirUserClaimKey];
