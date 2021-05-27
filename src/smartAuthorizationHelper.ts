@@ -119,6 +119,7 @@ export async function verifyJwtToken(
     expectedAudValue: string,
     expectedIssValue: string,
     client: JwksClient,
+    tenantId: string,
 ) {
     const genericErrorMessage = 'Invalid access token';
     const decodedAccessToken = decode(token, { complete: true });
@@ -134,7 +135,8 @@ export async function verifyJwtToken(
 
     try {
         const key = await client.getSigningKeyAsync(kid);
-        return verify(token, key.getPublicKey(), { audience: expectedAudValue, issuer: expectedIssValue });
+        const checkExpectedAudience = tenantId ? `${expectedAudValue}/tenant/${tenantId}` : expectedAudValue;
+        return verify(token, key.getPublicKey(), { audience: checkExpectedAudience, issuer: expectedIssValue });
     } catch (e) {
         console.error(e.message);
         throw new UnauthorizedError(genericErrorMessage);

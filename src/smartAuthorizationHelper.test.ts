@@ -382,7 +382,7 @@ describe('verifyJwt', () => {
             expectedIssValue,
         );
         const jwt = await getSignedJwt(payload);
-        return expect(verifyJwtToken(jwt, expectedAudValue, expectedIssValue, client)).resolves.toEqual(payload);
+        return expect(verifyJwtToken(jwt, expectedAudValue, expectedIssValue, client, '')).resolves.toEqual(payload);
     });
 
     test('JWT does not include "kid" attribute in header', async () => {
@@ -393,7 +393,7 @@ describe('verifyJwt', () => {
             expectedIssValue,
         );
         const jwt = await getSignedJwt(payload, false);
-        return expect(verifyJwtToken(jwt, expectedAudValue, expectedIssValue, client)).rejects.toThrowError(
+        return expect(verifyJwtToken(jwt, expectedAudValue, expectedIssValue, client, '')).rejects.toThrowError(
             new UnauthorizedError('Invalid access token'),
         );
     });
@@ -407,7 +407,7 @@ describe('verifyJwt', () => {
         );
         const jwt = await getSignedJwt(payload);
 
-        return expect(verifyJwtToken(jwt, expectedAudValue, expectedIssValue, client)).rejects.toThrowError(
+        return expect(verifyJwtToken(jwt, expectedAudValue, expectedIssValue, client, '')).rejects.toThrowError(
             new UnauthorizedError('Invalid access token'),
         );
     });
@@ -415,7 +415,7 @@ describe('verifyJwt', () => {
     test('invalid jwt', () => {
         const token = 'abc';
 
-        return expect(verifyJwtToken(token, expectedAudValue, expectedIssValue, client)).rejects.toThrowError(
+        return expect(verifyJwtToken(token, expectedAudValue, expectedIssValue, client, '')).rejects.toThrowError(
             new UnauthorizedError('Invalid access token'),
         );
     });
@@ -434,7 +434,7 @@ describe('verifyJwt', () => {
             );
             const jwt = await getSignedJwt(payload);
             return expect(
-                verifyJwtToken(jwt, expectedAudValue, 'https://exampleAuthServer.com/oauth2', client),
+                verifyJwtToken(jwt, expectedAudValue, 'https://exampleAuthServer.com/oauth2', client, ''),
             ).rejects.toThrowError(new UnauthorizedError('Invalid access token'));
         });
     });
@@ -453,7 +453,7 @@ describe('verifyJwt', () => {
             );
             const jwt = await getSignedJwt(payload);
             return expect(
-                verifyJwtToken(jwt, expectedAudValue, 'https://exampleAuthServer.com/oauth2', client),
+                verifyJwtToken(jwt, expectedAudValue, 'https://exampleAuthServer.com/oauth2', client, ''),
             ).resolves.toEqual(payload);
         });
     });
@@ -466,7 +466,7 @@ describe('verifyJwt', () => {
             expectedIssValue,
         );
         const jwt = await getSignedJwt(payload);
-        return expect(verifyJwtToken(jwt, expectedAudValue, 'fakeIss', client)).rejects.toThrowError(
+        return expect(verifyJwtToken(jwt, expectedAudValue, 'fakeIss', client, '')).rejects.toThrowError(
             new UnauthorizedError('Invalid access token'),
         );
     });
